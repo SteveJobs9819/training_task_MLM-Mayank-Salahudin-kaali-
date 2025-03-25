@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MLM DApp
 
-## Getting Started
+A decentralized Multi-Level Marketing (MLM) application built with Next.js, Ethers.js, and Solidity. This DApp allows users to participate in a referral system where they can earn rewards for bringing in new members.
 
-First, run the development server:
+## Features
 
+- Wallet Connection via MetaMask
+- Account Activation with BNB
+- Referral System
+- Earnings Tracking
+- Referral Link Generation and Sharing
+- Real-time Updates
+
+## Prerequisites
+
+- Node.js v23 or later
+- MetaMask wallet extension
+- BNB for activation (on Binance Smart Chain)
+
+## Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd mlm
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Create a `.env.local` file in the root directory and add your configuration:
+```env
+NEXT_PUBLIC_CONTRACT_ADDRESS=your_contract_address
+NEXT_PUBLIC_CHAIN_ID=56 # BSC Mainnet
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Start the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+## Smart Contract Integration
 
-To learn more about Next.js, take a look at the following resources:
+The DApp interacts with a Solidity smart contract deployed on the Binance Smart Chain. The contract handles:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Account activation
+- Referral tracking
+- Reward distribution
+- User status management
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. Connect your MetaMask wallet
+2. If you have a referral link, use it to join
+3. Activate your account by paying the activation fee (0.1 BNB)
+4. Share your referral link with others
+5. Earn rewards when your referrals join and activate their accounts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The project uses:
+
+- Next.js 14 with App Router
+- TypeScript for type safety
+- Tailwind CSS for styling
+- Ethers.js for blockchain interactions
+- MetaMask for wallet connection
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
