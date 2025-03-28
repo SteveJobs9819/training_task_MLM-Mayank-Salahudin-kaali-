@@ -75,7 +75,7 @@ export default function Home() {
       disconnectWallet();
       localStorage.removeItem('account');
     } catch (error: any) {
-      setError(error.message || 'Failed to disconnect wallet.');
+      setError(error.message || 'Failed to disconnect wallet.') ;
     }
   };
 
