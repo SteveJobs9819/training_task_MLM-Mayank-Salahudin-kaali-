@@ -14,19 +14,26 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check for stored referrer
     if (typeof window !== 'undefined') {
+      const storedAccount = localStorage.getItem('account');
+      if (storedAccount) {
+        connectWallet().catch(() => localStorage.removeItem('account'));
+      }
+
       const storedReferrer = localStorage.getItem('referrer');
       if (storedReferrer) {
         setReferrer(storedReferrer);
-        localStorage.removeItem('referrer'); // Clear the stored referrer
+        localStorage.removeItem('referrer');
       }
     }
   }, []);
 
   useEffect(() => {
     if (account) {
+      localStorage.setItem('account', account);
       loadUserData();
+    } else {
+      localStorage.removeItem('account');
     }
   }, [account]);
 
@@ -55,13 +62,31 @@ export default function Home() {
     setLoading(false);
   };
 
-  const copyReferralLink = () => {
+  const handleConnectWallet = async () => {
+    try {
+      await connectWallet();
+    } catch (error: any) {
+      setError(error.message || 'Failed to connect wallet.');
+    }
+  };
+
+  const handleDisconnectWallet = async () => {
+    try {
+      disconnectWallet();
+      localStorage.removeItem('account');
+    } catch (error: any) {
+      setError(error.message || 'Failed to disconnect wallet.') ;
+    }
+  };
+
+  const copyReferralLink = async () => {
     const link = `${window.location.origin}/ref/${account}`;
-    navigator.clipboard.writeText(link).then(() => {
-      // You could add a success toast here
-    }).catch(() => {
-      setError('Failed to copy link to clipboard');
-    });
+    try {
+      await navigator.clipboard.writeText(link);
+      alert('Referral link copied to clipboard!');
+    } catch {
+      setError('Failed to copy link to clipboard.');
+    }
   };
 
   return (
@@ -70,14 +95,14 @@ export default function Home() {
         <div className="text-2xl font-bold">MLM DApp</div>
         {account ? (
           <button
-            onClick={disconnectWallet}
+            onClick={handleDisconnectWallet}
             className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors"
           >
             Disconnect Wallet
           </button>
         ) : (
           <button
-            onClick={connectWallet}
+            onClick={handleConnectWallet}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
           >
             Connect Wallet
@@ -98,6 +123,7 @@ export default function Home() {
             <p className="mb-2">Address: {account}</p>
             <p className="mb-2">Status: {isActive ? 'Active' : 'Inactive'}</p>
             <p className="mb-2">Earnings: {earnings} BNB</p>
+            <p className="mb-2">Network: {chainId || 'Unknown'}</p>
           </div>
 
           {!isActive && (

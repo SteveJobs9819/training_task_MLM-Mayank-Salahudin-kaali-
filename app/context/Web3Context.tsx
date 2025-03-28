@@ -46,17 +46,22 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
         const contract = new Contract(MLM_CONTRACT_ADDRESS, MLM_CONTRACT_ABI, signer);
         const network = await provider.getNetwork();
         
-        console.log('xxxxxxxxxxx', accounts[0], provider, contract);
         setAccount(accounts[0]);
         setProvider(provider);
         setContract(contract);
         setChainId(Number(network.chainId));
-
-        // Check if account is active
-        const active = await contract.isAccountActive(accounts[0]);
-        setIsActive(active);
+  
+        // Safer check for account activation
+        try {
+          const active = await contract.isAccountActive(accounts[0]);
+          setIsActive(active);
+        } catch (activationError) {
+          console.error('Error checking account activation:', activationError);
+          setIsActive(false); // Default to inactive if check fails
+        }
       } catch (error) {
         console.error('Error connecting wallet:', error);
+        alert('Failed to connect wallet. Please try again.');
       }
     } else {
       alert('Please install MetaMask!');
